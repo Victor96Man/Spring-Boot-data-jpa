@@ -1,19 +1,13 @@
 package com.bolsadeideas.springboot.app.controllers;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bolsadeideas.springboot.app.models.entity.Cliente;
 import com.bolsadeideas.springboot.app.models.service.IClienteService;
+import com.bolsadeideas.springboot.app.models.service.IUploadsService;
 import com.bolsadeideas.springboot.app.util.paginator.PageRender;
 
 @Controller
@@ -40,21 +35,17 @@ public class ClienteController {
 
 	@Autowired
 	private IClienteService clienteService;
-	
-	private final static String UPLOADS_FOLDER = "uploads";
+	@Autowired
+	private IUploadsService uploadsService;
 
 	// Metodo para enviar la imagen de forma programatica en la respueta
 
 	@RequestMapping(value = "/uploads/{filename:.+}", method = RequestMethod.GET)
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
 
-		Path pathFoto = Paths.get(UPLOADS_FOLDER).resolve(filename).toAbsolutePath();
 		Resource resource = null;
 		try {
-			resource = new UrlResource(pathFoto.toUri());
-			if (!resource.exists() || !resource.isReadable()) {
-				throw new RuntimeException("Error: no se puede cargar la imagen " + pathFoto.toString());
-			}
+			resource = uploadsService.load(filename);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -131,29 +122,20 @@ public class ClienteController {
 
 			if (cliente.getId() != null && cliente.getId() > 0 && cliente.getFoto() != null
 					&& cliente.getFoto().length() > 0) {
-				Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(cliente.getFoto()).toAbsolutePath();
-				File archivo = rootPath.toFile();
 
-				if (archivo.exists() && archivo.canRead()) {
-					if (archivo.delete()) {
-						flash.addFlashAttribute("info", "Foto " + cliente.getFoto() + " eliminada correctamente");
-					}
-				}
-			}
-
-			String uniqueFilename = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
-			Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(uniqueFilename);
-			Path rooAbsolutePath = rootPath.toAbsolutePath();
-
-			try {
-				Files.copy(foto.getInputStream(), rooAbsolutePath);
-				flash.addFlashAttribute("info", "Foto '" + uniqueFilename + "' subida correctamente");
-				cliente.setFoto(uniqueFilename);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				uploadsService.delete(cliente.getFoto());
 			}
 		}
+		String uniqueFilename = null;
+		try {
+			uniqueFilename = uploadsService.copy(foto);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		flash.addFlashAttribute("info", "Foto '" + uniqueFilename + "' subida correctamente");
+		cliente.setFoto(uniqueFilename);
 
 		String mensajeFlash = (cliente.getId() != null) ? "Cliente editado con exito!!"
 				: "Cliente guardado con exito!!";
@@ -170,13 +152,8 @@ public class ClienteController {
 			Cliente cliente = clienteService.findOne(id);
 			clienteService.delete(id);
 			flash.addFlashAttribute("success", "Cliente eliminado con exito!!");
-			Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(cliente.getFoto()).toAbsolutePath();
-			File archivo = rootPath.toFile();
-
-			if (archivo.exists() && archivo.canRead()) {
-				if (archivo.delete()) {
-					flash.addFlashAttribute("info", "Foto " + cliente.getFoto() + " eliminada correctamente");
-				}
+			if (uploadsService.delete(cliente.getFoto())) {
+				flash.addFlashAttribute("info", "Foto " + cliente.getFoto() + " eliminada correctamente");
 			}
 		}
 		return "redirect:/listar";
