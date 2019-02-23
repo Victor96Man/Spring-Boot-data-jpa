@@ -1,5 +1,6 @@
 package com.bolsadeideas.springboot.app.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -40,17 +41,19 @@ public class ClienteController {
 	@Autowired
 	private IClienteService clienteService;
 	
-	//Metodo para enviar la imagen de forma programatica en la respueta
-	
-	@RequestMapping(value="/uploads/{filename:.+}",method = RequestMethod.GET)
-	public ResponseEntity<Resource> verFoto(@PathVariable String filename){
-		
-		Path pathFoto = Paths.get("uploads").resolve(filename).toAbsolutePath();
+	private final static String UPLOADS_FOLDER = "uploads";
+
+	// Metodo para enviar la imagen de forma programatica en la respueta
+
+	@RequestMapping(value = "/uploads/{filename:.+}", method = RequestMethod.GET)
+	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
+
+		Path pathFoto = Paths.get(UPLOADS_FOLDER).resolve(filename).toAbsolutePath();
 		Resource resource = null;
 		try {
 			resource = new UrlResource(pathFoto.toUri());
 			if (!resource.exists() || !resource.isReadable()) {
-				throw new RuntimeException("Error: no se puede cargar la imagen " + pathFoto.toString() );
+				throw new RuntimeException("Error: no se puede cargar la imagen " + pathFoto.toString());
 			}
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -60,22 +63,22 @@ public class ClienteController {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
 				.body(resource);
 	}
-	
-	@RequestMapping(value="/ver/{id}",method = RequestMethod.GET)
-	public String ver(@PathVariable(value = "id") Long id,Map<String, Object> model,RedirectAttributes flash) {
-		
+
+	@RequestMapping(value = "/ver/{id}", method = RequestMethod.GET)
+	public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
+
 		Cliente cliente = clienteService.findOne(id);
 		if (cliente == null) {
 			flash.addFlashAttribute("error", "El id no puede ser null.");
 			return "redirect:listar";
 		}
 		model.put("cliente", cliente);
-		model.put("titulo", "Detalle cliente: "+ cliente.getNombre() );
+		model.put("titulo", "Detalle cliente: " + cliente.getNombre());
 		return "ver";
 	}
 
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public String listar(@RequestParam(name="page", defaultValue="0") int page ,Model model) {
+	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
 
 		PageRequest pageRequest = PageRequest.of(page, 10);
 		Page<Cliente> clientes = clienteService.findAll(pageRequest);
@@ -107,7 +110,7 @@ public class ClienteController {
 				flash.addFlashAttribute("error", "El id no puede ser null.");
 				return "redirect:listar";
 			}
-		}else {
+		} else {
 			flash.addFlashAttribute("error", "El id no puede ser cero.");
 			return "redirect:listar";
 		}
@@ -117,29 +120,41 @@ public class ClienteController {
 	}
 
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
-	public String guardar(@Valid Cliente cliente, BindingResult result, Model model,@RequestParam("file") MultipartFile foto, RedirectAttributes flash,
-			SessionStatus status) {
+	public String guardar(@Valid Cliente cliente, BindingResult result, Model model,
+			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status) {
 
 		if (result.hasErrors()) {
 			model.addAttribute("titulo", "Formulario de Cliente");
 			return "form";
 		}
 		if (!foto.isEmpty()) {
-			
-			String uniqueFilename= UUID.randomUUID().toString() + "_"+ foto.getOriginalFilename();
-			Path rootPath = Paths.get("uploads").resolve(uniqueFilename);
-			Path rooAbsolutePath = rootPath.toAbsolutePath() ;
-			
+
+			if (cliente.getId() != null && cliente.getId() > 0 && cliente.getFoto() != null
+					&& cliente.getFoto().length() > 0) {
+				Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(cliente.getFoto()).toAbsolutePath();
+				File archivo = rootPath.toFile();
+
+				if (archivo.exists() && archivo.canRead()) {
+					if (archivo.delete()) {
+						flash.addFlashAttribute("info", "Foto " + cliente.getFoto() + " eliminada correctamente");
+					}
+				}
+			}
+
+			String uniqueFilename = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
+			Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(uniqueFilename);
+			Path rooAbsolutePath = rootPath.toAbsolutePath();
+
 			try {
 				Files.copy(foto.getInputStream(), rooAbsolutePath);
-				flash.addFlashAttribute("info", "Foto '"+ uniqueFilename+ "' subida correctamente");
+				flash.addFlashAttribute("info", "Foto '" + uniqueFilename + "' subida correctamente");
 				cliente.setFoto(uniqueFilename);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 		String mensajeFlash = (cliente.getId() != null) ? "Cliente editado con exito!!"
 				: "Cliente guardado con exito!!";
 		clienteService.save(cliente);
@@ -152,8 +167,17 @@ public class ClienteController {
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 
 		if (id > 0) {
+			Cliente cliente = clienteService.findOne(id);
 			clienteService.delete(id);
 			flash.addFlashAttribute("success", "Cliente eliminado con exito!!");
+			Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(cliente.getFoto()).toAbsolutePath();
+			File archivo = rootPath.toFile();
+
+			if (archivo.exists() && archivo.canRead()) {
+				if (archivo.delete()) {
+					flash.addFlashAttribute("info", "Foto " + cliente.getFoto() + " eliminada correctamente");
+				}
+			}
 		}
 		return "redirect:/listar";
 	}
