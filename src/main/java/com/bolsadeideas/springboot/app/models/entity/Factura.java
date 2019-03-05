@@ -19,9 +19,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "facturas")
@@ -31,30 +30,29 @@ public class Factura implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotEmpty
 	private String descripcion;
 
 	private String observacion;
 
-	@NotNull
-	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "create_at")
 	private Date createAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Cliente cliente;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "factura_id")
 	private List<ItemFactura> items;
 
-	@PrePersist
-	private void prePersist() {
-		createAt = new Date();
-	}
-
 	public Factura() {
 		this.items = new ArrayList<ItemFactura>();
+	}
+
+	@PrePersist
+	public void prePersist() {
+		createAt = new Date();
 	}
 
 	public Long getId() {
@@ -105,19 +103,18 @@ public class Factura implements Serializable {
 		this.items = items;
 	}
 
-	public void addItems(ItemFactura item) {
+	public void addItemFactura(ItemFactura item) {
 		this.items.add(item);
 	}
 
 	public Double getTotal() {
-		
 		Double total = 0.0;
+
 		int size = items.size();
-		
+
 		for (int i = 0; i < size; i++) {
 			total += items.get(i).calcularImporte();
 		}
-		
 		return total;
 	}
 

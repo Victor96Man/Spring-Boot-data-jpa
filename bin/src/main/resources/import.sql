@@ -1,0 +1,29 @@
+/* populate tables*/
+
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(1,'Victor','Gomez','victormanuelgomu@gmail.com','1996-12-29', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(2,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(3,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(4,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(5,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(6,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(7,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(8,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(9,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(10,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(11,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(12,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(13,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(14,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(15,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(16,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(17,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(18,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(19,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(20,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(21,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(22,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(23,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(24,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(25,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(26,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');
+INSERT INTO clientes (id, nombre, apellido, email, create_at, foto) VALUES(27,'Jenny','Gomez','jenny@gmail.com','1985-06-28', '');

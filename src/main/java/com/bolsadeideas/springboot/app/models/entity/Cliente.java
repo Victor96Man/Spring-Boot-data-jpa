@@ -32,13 +32,12 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	// no hace falta @Column porque se llamaran igual
 	@NotEmpty
 	private String nombre;
-
+	
 	@NotEmpty
 	private String apellido;
-
+	
 	@NotEmpty
 	@Email
 	private String email;
@@ -46,20 +45,18 @@ public class Cliente implements Serializable {
 	@NotNull
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date createAt;
+	
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Factura> facturas;
+	
+	public Cliente() {
+		facturas = new ArrayList<Factura>();
+	}
 
 	private String foto;
 	
-	@OneToMany(mappedBy="cliente",fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	private List<Factura> facturas;
-	
-	
-
-	public Cliente() {
-		this.facturas = new ArrayList<Factura>();
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -115,8 +112,14 @@ public class Cliente implements Serializable {
 	public void setFacturas(List<Factura> facturas) {
 		this.facturas = facturas;
 	}
-
+	
 	public void addFactura(Factura factura) {
-		this.facturas.add(factura);
+		facturas.add(factura);
 	}
+
+	@Override
+	public String toString() {
+		return nombre + " " + apellido;
+	}
+
 }
