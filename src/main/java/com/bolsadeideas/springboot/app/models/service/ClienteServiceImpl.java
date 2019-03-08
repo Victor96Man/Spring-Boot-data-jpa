@@ -16,7 +16,7 @@ import com.bolsadeideas.springboot.app.models.entity.Factura;
 import com.bolsadeideas.springboot.app.models.entity.Producto;
 
 @Service
-public class ClienteSeviceImpl implements IClienteService {
+public class ClienteServiceImpl implements IClienteService{
 
 	@Autowired
 	private IClienteDao clienteDao;
@@ -38,7 +38,6 @@ public class ClienteSeviceImpl implements IClienteService {
 	@Transactional
 	public void save(Cliente cliente) {
 		clienteDao.save(cliente);
-		
 	}
 
 	@Override
@@ -46,12 +45,17 @@ public class ClienteSeviceImpl implements IClienteService {
 	public Cliente findOne(Long id) {
 		return clienteDao.findById(id).orElse(null);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Cliente fetchByIdWithFacturas(Long id) {
+		return clienteDao.fetchByIdWithFacturas(id);
+	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
 		clienteDao.deleteById(id);
-		
 	}
 
 	@Override
@@ -87,7 +91,7 @@ public class ClienteSeviceImpl implements IClienteService {
 	@Override
 	@Transactional
 	public void deleteFactura(Long id) {
-		facturaDao.deleteById(id);
+		facturaDao.deleteById(id); // facturaDao.deleteById(id);
 	}
 
 	@Override
