@@ -31,7 +31,7 @@
 						class="btn btn-outline-primary dropdown-toggle" href="#"
 						role="button" id="dropdownMenuLink" data-toggle="dropdown"
 						aria-haspopup="true" aria-expanded="false"><span
-							th:text="${#httpServletRequest.remoteUser}"></span></a>
+							sec:authentication="name"></span></a>
 
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 							<form id="logoutForm" th:action="@{/logout}" method="post">
@@ -62,7 +62,7 @@
 		<hr />
 		<img th:src="@{/images/spring.png}" alt="Spring logo" />
 		<p sec:authorize="isAuthenticated()">
-			Usuario logeado: <span th:text="${#httpServletRequest.remoteUser}"></span> | Roles: <span
+			Usuario logeado: <span sec:authentication="name"></span> | Roles: <span
 				sec:authentication="principal.authorities"></span>
 		</p>
 		<p>
