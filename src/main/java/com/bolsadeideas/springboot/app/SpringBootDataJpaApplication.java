@@ -29,8 +29,7 @@ public class SpringBootDataJpaApplication implements CommandLineRunner{
 		String password = "12345";
 		
 		for (int i = 0; i < 2; i++) {
-			String bcryptPassword = passwordEncoder.encode(password);
-			System.out.println(bcryptPassword);
+			passwordEncoder.encode(password);
 		}
 	}
 

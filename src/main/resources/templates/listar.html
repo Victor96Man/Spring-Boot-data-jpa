@@ -16,8 +16,9 @@
 				<h4 class="card-title">
 					<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/form}" class="btn btn-primary btn-xs" th:text="#{text.cliente.crear}">crear
 						cliente</a>
-						<a class="btn btn-success btn-xs float-right mx-2" th:href="@{'/listar'(format=csv)}">CSV</a>
-						<a class="btn btn-outline-success btn-xs float-right" th:href="@{'/listar'(format=xml)}">XML</a>
+						<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-outline-warning btn-xs float-right mx-2" th:href="@{'/listar'(format=csv)}">CSV</a>
+						<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-outline-success btn-xs float-right" th:href="@{'/listar'(format=xml)}">XML</a>
+						<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-outline-danger btn-xs float-right mx-2" th:href="@{'/listar'(format=json)}">JSON</a>
 				</h4>
 				<table class="table table-striped table-bordered">
 					<thead class="thead-inverse">
