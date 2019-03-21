@@ -2,15 +2,12 @@ package com.bolsadeideas.springboot.app.controllers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
@@ -23,11 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,7 +44,7 @@ import com.bolsadeideas.springboot.app.view.xml.ClienteList;
 @SessionAttributes("cliente")
 public class ClienteController {
 	
-	protected final Log logger = LogFactory.getLog(this.getClass());
+	/*protected final Log logger = LogFactory.getLog(this.getClass());*/
 
 	@Autowired
 	private IClienteService clienteService;
@@ -106,6 +98,7 @@ public class ClienteController {
 			HttpServletRequest request,
 			Locale locale) {
 
+		/*
 		if(authentication != null) {
 			logger.info("Hola usuario autenticado, tu username es: ".concat(authentication.getName()));
 		}
@@ -135,6 +128,7 @@ public class ClienteController {
 		} else {
 			logger.info("Forma usando HttpServletRequest: Hola ".concat(auth.getName()).concat(" NO tienes acceso!"));
 		}	
+		*/
 		
 		Pageable pageRequest = PageRequest.of(page, 4);
 
@@ -237,7 +231,7 @@ public class ClienteController {
 		return "redirect:/listar";
 	}
 	
-	private boolean hasRole(String role) {
+	/*private boolean hasRole(String role) {
 		
 		SecurityContext context = SecurityContextHolder.getContext();
 		
@@ -254,7 +248,7 @@ public class ClienteController {
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 		
 		return authorities.contains(new SimpleGrantedAuthority(role));
-
+*/
 		/*
 		 * for(GrantedAuthority authority: authorities) {
 		 * if(role.equals(authority.getAuthority())) {
@@ -262,8 +256,8 @@ public class ClienteController {
 		 * .concat(authority.getAuthority()))); return true; } }
 		 * 
 		 * return false;
-		 */
+		 
 
-	}
+	}*/
 
 }
