@@ -9,6 +9,8 @@ ApiRest que muestra los datos de los clientes en JSON.
 
 Esta es una versión en la que el proyecto esta configurado para un servisdor Tomcat externo.
 
+![listar](https://github.com/Victor96Man/Spring-Boot-data-jpa/blob/master/Documentacion/listar_admin.PNG)
+
 ## Realizado con
 
 * [Eclipse](https://www.eclipse.org/) - IDE
