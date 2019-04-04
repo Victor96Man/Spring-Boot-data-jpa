@@ -9,6 +9,8 @@ ApiRest que muestra los datos de los clientes en JSON.
 
 Esta es una versión en la que uso JWT para el control de seguridad de las peticiones del ApiRest.
 
+![listar](https://github.com/Victor96Man/Spring-Boot-data-jpa/blob/master/Documentacion/listar_admin.PNG)
+
 ## Realizado con
 
 * [Eclipse](https://www.eclipse.org/) - IDE
