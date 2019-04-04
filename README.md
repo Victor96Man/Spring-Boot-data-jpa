@@ -3,7 +3,9 @@
 Proyecto ejemplo de los conocimientos adquiridos en el curso online "[Spring Framework 5: Creando web app de cero a experto](https://www.udemy.com/spring-framework-5/)" de [Udemy](https://www.udemy.com/).
 
 ## Descripción
-Aplicación Web para el manejo de los datos de los clientes y sus facturas, pudiendo exportar estos a JSON, CSV y XML, ademas la web cuenta tambien con autentificación por roles y soporte a multilenguaje.
+Aplicación Web para el manejo de los datos de los clientes y sus facturas, pudiendo exportar estos a JSON, CSV, XML, PDF y XLS, ademas la web cuenta también con autentificación por roles y soporte a multilenguaje.
+
+ApiRest que muestra los datos de los clientes en JSON.
 
 ## Realizado con
 
